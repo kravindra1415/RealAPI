@@ -18,5 +18,10 @@ namespace WebApplication1.Controllers
         {
             return "abc";
         }
+
+        public string Hello()
+        {
+            return "hello";
+        }
     }
 }
