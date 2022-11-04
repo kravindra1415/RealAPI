@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using WebApplication1.Data.Repository.Interfaces;
+using WebApplication1.Dtos;
 using WebApplication1.Models;
 
 namespace WebApplication1.Data.Repository
@@ -14,6 +16,9 @@ namespace WebApplication1.Data.Repository
         }
         public void AddCity(City cityName)
         {
+            var city = new City();
+            city.Name = cityName.Name;
+
             _dataContext.Cities.Add(cityName);
         }
 

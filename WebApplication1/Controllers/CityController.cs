@@ -1,6 +1,6 @@
-﻿
-using Microsoft.AspNetCore.Mvc;
-using WebApplication1.Data.Repository;
+﻿using Microsoft.AspNetCore.Mvc;
+using WebApplication1.Data.Repository.Interfaces;
+using WebApplication1.Dtos;
 using WebApplication1.Models;
 
 namespace WebApplication1.Controllers
@@ -9,21 +9,31 @@ namespace WebApplication1.Controllers
     [ApiController]
     public class CityController : ControllerBase
     {
-        private readonly ICityRepository _cityRepository;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public CityController(ICityRepository cityRepository)
+        //private readonly ICityRepository _cityRepository;
+
+        public CityController(IUnitOfWork unitOfWork)
         {
-            _cityRepository = cityRepository;
+            _unitOfWork = unitOfWork;
         }
 
         //Get City
         [HttpGet]
         public async Task<IActionResult> Get()
         {
-            var cities = await _cityRepository.GetCitiesAsync();
+            //var cities = await _cityRepository.GetCitiesAsync();
+            var cities = await _unitOfWork.CityRepository.GetCitiesAsync();
+
+            var citiesDto = from c in cities
+                            select new CityDto()
+                            {
+                                Id = c.Id,
+                                Name = c.Name
+                            }; 
+
             return Ok(cities);
         }
-
 
         //Add City
         //api/city/add?cityname=Mumbai
@@ -43,11 +53,22 @@ namespace WebApplication1.Controllers
         //    return Ok(city);
         //}
 
+
         [HttpPost("post")]
-        public async Task<IActionResult> AddCity(City cityName)
+        public async Task<IActionResult> AddCity(CityDto cityDto)
         {
-            _cityRepository.AddCity(cityName);
-            await _cityRepository.SaveAsync();
+            //_cityRepository.AddCity(cityName);
+            //await _cityRepository.SaveAsync();
+
+            var city = new City
+            {
+                Name = cityDto.Name,
+                LastUpdatedBy = 1,
+                LastUpdatedOn = DateTime.Now,
+            };
+
+            _unitOfWork.CityRepository.AddCity(city);
+            await _unitOfWork.SaveAsync();
             return StatusCode(201);
         }
 
@@ -60,8 +81,11 @@ namespace WebApplication1.Controllers
             //await _dbContext.SaveChangesAsync();
             //return Ok(id);
 
-            _cityRepository.DeleteCity(id);
-            await _cityRepository.SaveAsync();
+            //_cityRepository.DeleteCity(id);
+            //await _cityRepository.SaveAsync();
+
+            _unitOfWork.CityRepository.DeleteCity(id);
+            await _unitOfWork.SaveAsync();
             return Ok(id);
         }
 

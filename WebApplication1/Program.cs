@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using WebApplication1.Data;
 using WebApplication1.Data.Repository;
+using WebApplication1.Data.Repository.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,7 +19,8 @@ string connectionString = builder.Configuration.GetConnectionString("Default");
 builder.Services.AddDbContext<DataContext>(options => options.UseSqlServer(connectionString));
 
 //repository
-builder.Services.AddScoped<ICityRepository,CityRepository>();
+//builder.Services.AddScoped<ICityRepository,CityRepository>();
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
 var app = builder.Build();
 
