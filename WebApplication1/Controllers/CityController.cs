@@ -14,7 +14,6 @@ namespace WebApplication1.Controllers
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
 
-
         //private readonly ICityRepository _cityRepository;
 
         public CityController(IUnitOfWork unitOfWork, IMapper mapper)
