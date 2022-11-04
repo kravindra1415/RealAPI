@@ -27,6 +27,9 @@ builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 //AutoMapper
 builder.Services.AddAutoMapper(typeof(AutoMapp));
 
+//patch
+builder.Services.AddControllers().AddNewtonsoftJson();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

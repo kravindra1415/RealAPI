@@ -9,6 +9,7 @@ namespace WebApplication1.Helpers
         public AutoMapp()
         {
             CreateMap<City, CityDto>().ReverseMap();
+            CreateMap<City, CityUpdateDto>().ReverseMap();
         }
     }
 }

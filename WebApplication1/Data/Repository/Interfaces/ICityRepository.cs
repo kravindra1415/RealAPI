@@ -11,6 +11,8 @@ namespace WebApplication1.Data.Repository.Interfaces
         void DeleteCity(int id);
         Task<bool> SaveAsync();
 
+        Task<City> FindCity(int id);
+
     }
 }
  
