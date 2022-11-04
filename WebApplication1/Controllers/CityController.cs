@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using WebApplication1.Data.Repository.Interfaces;
 using WebApplication1.Dtos;
 using WebApplication1.Models;
@@ -10,12 +11,15 @@ namespace WebApplication1.Controllers
     public class CityController : ControllerBase
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IMapper _mapper;
+
 
         //private readonly ICityRepository _cityRepository;
 
-        public CityController(IUnitOfWork unitOfWork)
+        public CityController(IUnitOfWork unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
+            _mapper = mapper;
         }
 
         //Get City
@@ -25,14 +29,18 @@ namespace WebApplication1.Controllers
             //var cities = await _cityRepository.GetCitiesAsync();
             var cities = await _unitOfWork.CityRepository.GetCitiesAsync();
 
-            var citiesDto = from c in cities
-                            select new CityDto()
-                            {
-                                Id = c.Id,
-                                Name = c.Name
-                            }; 
+            //var citiesDto = from c in cities
+            //                select new CityDto()
+            //                {
+            //                    Id = c.Id,
+            //                    Name = c.Name
+            //                };
 
-            return Ok(cities);
+            var citiesDto = _mapper.Map<IEnumerable<CityDto>>(cities);
+            //CityDto => destination
+            //cities => source
+
+            return Ok(citiesDto);
         }
 
         //Add City
@@ -60,12 +68,18 @@ namespace WebApplication1.Controllers
             //_cityRepository.AddCity(cityName);
             //await _cityRepository.SaveAsync();
 
-            var city = new City
-            {
-                Name = cityDto.Name,
-                LastUpdatedBy = 1,
-                LastUpdatedOn = DateTime.Now,
-            };
+            var city = _mapper.Map<City>(cityDto);
+            //City => Destination
+            //citydto => Source
+            city.LastUpdatedBy = 1;
+            city.LastUpdatedOn = DateTime.Now;
+
+            //var city = new City
+            //{
+            //    Name = cityDto.Name,
+            //    LastUpdatedBy = 1,
+            //    LastUpdatedOn = DateTime.Now,
+            //};
 
             _unitOfWork.CityRepository.AddCity(city);
             await _unitOfWork.SaveAsync();

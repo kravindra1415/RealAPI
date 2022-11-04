@@ -1,7 +1,9 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using WebApplication1.Data;
 using WebApplication1.Data.Repository;
 using WebApplication1.Data.Repository.Interfaces;
+using WebApplication1.Helpers;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,6 +23,9 @@ builder.Services.AddDbContext<DataContext>(options => options.UseSqlServer(conne
 //repository
 //builder.Services.AddScoped<ICityRepository,CityRepository>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+//AutoMapper
+builder.Services.AddAutoMapper(typeof(AutoMapp));
 
 var app = builder.Build();
 

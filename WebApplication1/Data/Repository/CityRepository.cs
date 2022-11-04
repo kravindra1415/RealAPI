@@ -16,8 +16,10 @@ namespace WebApplication1.Data.Repository
         }
         public void AddCity(City cityName)
         {
-            var city = new City();
-            city.Name = cityName.Name;
+            var city = new City
+            {
+                Name = cityName.Name
+            };
 
             _dataContext.Cities.Add(cityName);
         }
