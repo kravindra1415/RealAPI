@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using WebApplication1.Data;
+using WebApplication1.Data.Repository;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,9 +15,10 @@ builder.Services.AddSwaggerGen();
 
 //add datacontext
 string connectionString = builder.Configuration.GetConnectionString("Default");
-
 builder.Services.AddDbContext<DataContext>(options => options.UseSqlServer(connectionString));
 
+//repository
+builder.Services.AddScoped<ICityRepository,CityRepository>();
 
 var app = builder.Build();
 
