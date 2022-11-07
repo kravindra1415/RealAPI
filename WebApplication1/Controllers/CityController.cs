@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using WebApplication1.Data.Repository.Interfaces;
@@ -7,9 +8,11 @@ using WebApplication1.Models;
 
 namespace WebApplication1.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class CityController : ControllerBase
+    //[Route("api/[controller]")]
+    //[ApiController]
+
+    [Authorize]
+    public class CityController : BaseController
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
@@ -24,6 +27,7 @@ namespace WebApplication1.Controllers
 
         //Get City
         [HttpGet]
+        //[AllowAnonymous] // means except this method all methods are restricted
         public async Task<IActionResult> Get()
         {
             //var cities = await _cityRepository.GetCitiesAsync();
@@ -116,14 +120,25 @@ namespace WebApplication1.Controllers
         [HttpPut("update/{id}")]
         public async Task<IActionResult> UpdateCity(int id, CityUpdateDto cityDto)
         {
-            var cityFromDb = await _unitOfWork.CityRepository.FindCity(id);
-            cityFromDb.LastUpdatedOn = DateTime.Now;
-            cityFromDb.LastUpdatedBy = 1;
+            try
+            {
 
-            _mapper.Map(cityDto, cityFromDb); // source => cityDto   dest => cityFromDb
+                var cityFromDb = await _unitOfWork.CityRepository.FindCity(id);
+                cityFromDb.LastUpdatedOn = DateTime.Now;
+                cityFromDb.LastUpdatedBy = 1;
 
-            await _unitOfWork.SaveAsync();
-            return StatusCode(200);
+                _mapper.Map(cityDto, cityFromDb); // source => cityDto   dest => cityFromDb
+
+                throw new Exception("some unknown error occurred..");
+
+                await _unitOfWork.SaveAsync();
+                return StatusCode(200);
+            }
+            catch
+            {
+                return StatusCode(500, "some unknowon error occurred!!");
+            }
+
         }
 
         [HttpDelete("delete/{id}")]

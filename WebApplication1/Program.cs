@@ -1,5 +1,8 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 using WebApplication1.Data;
 using WebApplication1.Data.Repository;
 using WebApplication1.Data.Repository.Interfaces;
@@ -24,11 +27,31 @@ builder.Services.AddDbContext<DataContext>(options => options.UseSqlServer(conne
 //builder.Services.AddScoped<ICityRepository,CityRepository>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
+//authentication service
+
+//secret key
+var secretKey = builder.Configuration.GetSection("AppSettings:Key").Value;
+
+//key
+var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey));
+
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuerSigningKey = true,
+            ValidateIssuer = false,
+            ValidateAudience = false,
+            IssuerSigningKey = key,
+        };
+    });
+
 //AutoMapper
 builder.Services.AddAutoMapper(typeof(AutoMapp));
 
 //patch
-builder.Services.AddControllers().AddNewtonsoftJson();
+builder.Services.AddControllers().AddNewtonsoftJson();  // but it is deprecated
 
 var app = builder.Build();
 
@@ -40,6 +63,9 @@ if (app.Environment.IsDevelopment())
 }
 app.UseCors(policy => policy.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());
 app.UseHttpsRedirection();
+
+//authentication
+app.UseAuthentication();
 
 app.UseAuthorization();
 
