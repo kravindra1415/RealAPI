@@ -40,6 +40,18 @@ namespace WebApplication1.Controllers
             return Ok(loginRes);
         }
 
+        [HttpPost("register")]
+        public async Task<IActionResult> Register(LoginRequestDto userDto)
+        {
+            if (await _unitOfWork.UserRepository.UserAlreadyExists(userDto.UserName))
+
+                return BadRequest("User Already Exists, please try something else..");
+
+            _unitOfWork.UserRepository.Register(userDto.UserName, userDto.Password);
+            await _unitOfWork.SaveAsync();
+            return Ok(201);
+        }
+
         private string CreateJWT(User user)
         {
             //secret key
