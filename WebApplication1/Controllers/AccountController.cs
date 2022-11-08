@@ -28,7 +28,7 @@ namespace WebApplication1.Controllers
             var user = await _unitOfWork.UserRepository.Authenticate(userDto.UserName, userDto.Password);
             if (user == null)
             {
-                return Unauthorized();
+                return Unauthorized("Invalid User ID or Password");
             }
 
             var loginRes = new LoginResDto
