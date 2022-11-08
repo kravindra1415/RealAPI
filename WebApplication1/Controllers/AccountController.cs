@@ -5,6 +5,7 @@ using System.Security.Claims;
 using System.Text;
 using WebApplication1.Data.Repository.Interfaces;
 using WebApplication1.Dtos;
+using WebApplication1.Extensions;
 using WebApplication1.Models;
 
 namespace WebApplication1.Controllers
@@ -43,6 +44,12 @@ namespace WebApplication1.Controllers
         [HttpPost("register")]
         public async Task<IActionResult> Register(LoginRequestDto userDto)
         {
+            //if (string.IsNullOrEmpty(userDto.UserName.Trim()) || string.IsNullOrEmpty(userDto.Password.Trim()))
+            if (userDto.UserName.IsEmpty() || userDto.Password.IsEmpty())
+            {
+                return BadRequest("userName or password can't be blank!!");
+            }
+
             if (await _unitOfWork.UserRepository.UserAlreadyExists(userDto.UserName))
 
                 return BadRequest("User Already Exists, please try something else..");
