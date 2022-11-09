@@ -6,11 +6,11 @@ namespace WebApplication1.Models
     {
         //public int Id { get; set; }
         [Required]
-        public string? Username { get; set; }
+        public string? Username { get; set; } = null!;
 
         [Required]
-        public byte[] Password { get; set; }
-        public byte[] PasswordKey { get; set; }
+        public byte[] Password { get; set; } = null!;
+        public byte[] PasswordKey { get; set; } = null!;
 
     }
 }

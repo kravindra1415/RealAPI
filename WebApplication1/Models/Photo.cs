@@ -8,9 +8,9 @@ namespace WebApplication1.Models
     {
         //public int Id { get; set; }
         [Required]
-        public string imageURL { get; set; }
+        public string imageURL { get; set; } = null!;
         public bool IsPrimary { get; set; }
         public int PropertyId { get; set; }
-        public Property Property { get; set; }
+        public Property Property { get; set; } = null!;
     }
 }

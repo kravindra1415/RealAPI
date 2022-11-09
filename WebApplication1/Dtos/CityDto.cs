@@ -8,10 +8,10 @@ namespace WebApplication1.Dtos
 
         [Required(ErrorMessage = "Name is mandatory Field..")]
         [StringLength(25, MinimumLength = 2)]
-        public string Name { get; set; }
+        public string Name { get; set; } = null!;
 
         [Required(ErrorMessage = "Country is mandatory Field..")]
 
-        public string Country { get; set; }
+        public string Country { get; set; } = null!;
     }
 }

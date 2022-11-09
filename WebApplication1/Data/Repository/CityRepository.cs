@@ -30,7 +30,7 @@ namespace WebApplication1.Data.Repository
             _dataContext.Cities.Remove(city);
         }
 
-        public async Task<City> FindCity(int id)
+        public async Task<City?> FindCity(int id)
         {
             return await _dataContext.Cities.FindAsync(id);
         }

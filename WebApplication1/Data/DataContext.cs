@@ -10,12 +10,12 @@ namespace WebApplication1.Data
 
         }
 
-        public DbSet<City> Cities { get; set; }
-        public DbSet<User> Users { get; set; }
-        public DbSet<FurnishingType> FurnishingTypes { get; set; }
-        //public DbSet<Photo> Photos { get; set; }
-        public DbSet<Property> Properties { get; set; }
-        public DbSet<PropertyType> PropertyTypes { get; set; }
+        public DbSet<City> Cities { get; set; } = null!;
+        public DbSet<User> Users { get; set; } = null!;
+        public DbSet<FurnishingType> FurnishingTypes { get; set; } = null!;
+        //public DbSet<Photo> Photos { get; set; } = null!;
+        public DbSet<Property> Properties { get; set; } = null!;
+        public DbSet<PropertyType> PropertyTypes { get; set; } = null!;
 
 
 
