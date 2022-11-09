@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using WebApplication1.Data.Repository.Interfaces;
+using WebApplication1.Dtos;
 
 namespace WebApplication1.Controllers
 {
@@ -17,15 +18,17 @@ namespace WebApplication1.Controllers
             _unitOfWork = unitOfWork;
             _mapper = mapper;
         }
-        
+
         //property/type/1
-        [HttpGet("type/{sellRent}")]
+        [HttpGet("list/{sellRent}")]
         [AllowAnonymous]
 
         public async Task<IActionResult> GetPropertyList(int sellRent)
         {
             var property = await _unitOfWork.PropertyRepository.GetPropertiesAsync(sellRent);
-            return Ok(property);
+            var propertyListDto = _mapper.Map<IEnumerable<PropertyListDto>>(property);
+
+            return Ok(propertyListDto);
         }
 
     }
