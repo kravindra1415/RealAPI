@@ -19,7 +19,7 @@ namespace WebApplication1.Controllers
             _mapper = mapper;
         }
 
-        //property/type/1
+        //Property/type/1
         [HttpGet("list/{sellRent}")]
         [AllowAnonymous]
 
@@ -29,6 +29,17 @@ namespace WebApplication1.Controllers
             var propertyListDto = _mapper.Map<IEnumerable<PropertyListDto>>(property);
 
             return Ok(propertyListDto);
+        }
+
+        //Property
+        [HttpGet("detail/{id}")]
+        [AllowAnonymous]
+        public async Task<IActionResult> GetPropertyDetail(int id)
+        {
+            var property = await _unitOfWork.PropertyRepository.GetPropertyDetailAsync(id);
+            var propertyDto = _mapper.Map<PropertyDetailDto>(property);
+
+            return Ok(propertyDto);
         }
 
     }

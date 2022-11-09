@@ -7,5 +7,6 @@ namespace WebApplication1.Data.Repository.Interfaces
         Task<IEnumerable<Property>> GetPropertiesAsync(int SellRent);
         void AddProperty(Property property);
         void DeleteProperty(int Id);
+        Task<Property> GetPropertyDetailAsync(int Id);
     }
 }

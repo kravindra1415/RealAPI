@@ -34,5 +34,16 @@ namespace WebApplication1.Data.Repository
                 .Where(p => p.SellRent == SellRent).ToListAsync();
             return properties;
         }
+
+        public async Task<Property> GetPropertyDetailAsync(int Id)
+        {
+            var properties = await _dataContext.Properties
+                .Include(p => p.PropertyType)
+                .Include(p => p.City)
+                .Include(p => p.FurnishingType)
+                .Where(p => p.Id == Id).FirstAsync();
+
+            return properties;
+        }
     }
 }
