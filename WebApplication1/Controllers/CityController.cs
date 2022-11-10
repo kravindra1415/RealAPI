@@ -27,9 +27,12 @@ namespace WebApplication1.Controllers
 
         //Get City
         [HttpGet]
-        //[AllowAnonymous] // means except this method all methods are restricted
+        [AllowAnonymous] // means except this method all methods are restricted
+        //Specifies that the class or method that this attribute is applied to does not require authorization.
+
         public async Task<IActionResult> Get()
         {
+
             //var cities = await _cityRepository.GetCitiesAsync();
             var cities = await _unitOfWork.CityRepository.GetCitiesAsync();
 
@@ -45,6 +48,8 @@ namespace WebApplication1.Controllers
             //cities => source
 
             return Ok(citiesDto);
+
+
         }
 
         //Add City
