@@ -72,6 +72,7 @@ namespace WebApplication1.Controllers
 
 
         [HttpPost("post")]
+        [AllowAnonymous]
         public async Task<IActionResult> AddCity(CityDto cityDto)
         {
             //_cityRepository.AddCity(cityName);

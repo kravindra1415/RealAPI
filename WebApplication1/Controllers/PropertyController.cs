@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using WebApplication1.Data.Repository.Interfaces;
 using WebApplication1.Dtos;
+using WebApplication1.Models;
 
 namespace WebApplication1.Controllers
 {
@@ -19,7 +20,7 @@ namespace WebApplication1.Controllers
             _mapper = mapper;
         }
 
-        //Property/type/1
+        //Property/list/1
         [HttpGet("list/{sellRent}")]
         [AllowAnonymous]
 
@@ -31,7 +32,7 @@ namespace WebApplication1.Controllers
             return Ok(propertyListDto);
         }
 
-        //Property
+        //Property/detail/1
         [HttpGet("detail/{id}")]
         [AllowAnonymous]
         public async Task<IActionResult> GetPropertyDetail(int id)
@@ -42,5 +43,29 @@ namespace WebApplication1.Controllers
             return Ok(propertyDto);
         }
 
+        //Property/add/1
+        [HttpPost("add")]
+        [AllowAnonymous]
+        public async Task<IActionResult> AddProperty(PropertyDto propertyDto)
+        {
+            try
+            {
+                var property = _mapper.Map<Property>(propertyDto);
+                property.PostedBy = 1;
+                property.LastUpdatedBy = 1;
+
+                _unitOfWork.PropertyRepository.AddProperty(property);
+                await _unitOfWork.SaveAsync();
+
+                return StatusCode(201);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+
+        }
     }
 }

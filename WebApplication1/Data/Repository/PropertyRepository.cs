@@ -16,7 +16,7 @@ namespace WebApplication1.Data.Repository
 
         public void AddProperty(Property property)
         {
-
+            _dataContext.Properties.Add(property);
         }
 
         public void DeleteProperty(int Id)
