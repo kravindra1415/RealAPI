@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace WebApplication1.Controllers
 {
@@ -7,6 +8,10 @@ namespace WebApplication1.Controllers
 
     public class BaseController : ControllerBase
     {
+        protected int GetUserId()
+        {
+            return int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
 
+        }
     }
 }

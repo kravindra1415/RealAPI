@@ -45,14 +45,18 @@ namespace WebApplication1.Controllers
 
         //Property/add/1
         [HttpPost("add")]
-        [AllowAnonymous]
+        [Authorize]
         public async Task<IActionResult> AddProperty(PropertyDto propertyDto)
         {
             try
             {
                 var property = _mapper.Map<Property>(propertyDto);
-                property.PostedBy = 1;
-                property.LastUpdatedBy = 1;
+                //property.PostedBy = 1;
+                //property.LastUpdatedBy = 1;
+
+                var userId = GetUserId();
+                property.LastUpdatedBy = userId;
+                property.PostedBy = userId;
 
                 _unitOfWork.PropertyRepository.AddProperty(property);
                 await _unitOfWork.SaveAsync();
