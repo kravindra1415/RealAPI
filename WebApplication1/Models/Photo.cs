@@ -4,9 +4,10 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace WebApplication1.Models
 {
     [Table("Photos")]
-    public class Photo: BaseEntity
+    public class Photo : BaseEntity
     {
-        //public int Id { get; set; }
+        [Required]
+        public string PublicId { get; set; }
         [Required]
         public string imageURL { get; set; } = null!;
         public bool IsPrimary { get; set; }

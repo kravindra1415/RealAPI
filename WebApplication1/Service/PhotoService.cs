@@ -27,7 +27,8 @@ namespace WebApplication1.Service
                 var uploadParams = new ImageUploadParams
                 {
                     File = new FileDescription(photo.FileName,stream),
-                    Transformation = new Transformation().Height(500).Width(800)
+                    Transformation = new Transformation().Height(500).Width(800),
+                    
                 };
 
                 uploadResult = await cloudinary.UploadAsync(uploadParams);

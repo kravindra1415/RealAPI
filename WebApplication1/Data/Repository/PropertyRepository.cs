@@ -30,7 +30,7 @@ namespace WebApplication1.Data.Repository
             var properties = await _dataContext.Properties
                 .Include(p => p.PropertyType)
                 .Include(p => p.City)
-                .Include(p=>p.FurnishingType)
+                .Include(p => p.FurnishingType)
                 .Where(p => p.SellRent == SellRent).ToListAsync();
             return properties;
         }
@@ -40,7 +40,17 @@ namespace WebApplication1.Data.Repository
             var properties = await _dataContext.Properties
                 .Include(p => p.PropertyType)
                 .Include(p => p.City)
+                .Include(p => p.Photos)
                 .Include(p => p.FurnishingType)
+                .Where(p => p.Id == Id).FirstAsync();
+
+            return properties;
+        }
+
+        public async Task<Property> GetPropertyByIdAsync(int Id)
+        {
+            var properties = await _dataContext.Properties
+                .Include(p => p.Photos)
                 .Where(p => p.Id == Id).FirstAsync();
 
             return properties;

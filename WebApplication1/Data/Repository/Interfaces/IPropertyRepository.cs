@@ -8,5 +8,6 @@ namespace WebApplication1.Data.Repository.Interfaces
         void AddProperty(Property property);
         void DeleteProperty(int Id);
         Task<Property> GetPropertyDetailAsync(int Id);
+        Task<Property> GetPropertyByIdAsync(int Id);
     }
 }

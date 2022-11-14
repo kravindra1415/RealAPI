@@ -85,9 +85,25 @@ namespace WebApplication1.Controllers
                 {
                     return BadRequest(result.Error.Message);
                 }
-                return Ok(201);
+
+                var property = await _unitOfWork.PropertyRepository.GetPropertyDetailAsync(propId);
+
+                var photo = new Photo
+                {
+                    imageURL = result.SecureUrl.AbsoluteUri,
+                    PublicId = result.PublicId,
+                };
+
+                if (property.Photos.Count == 0)
+                {
+                    photo.IsPrimary = true; 
+                }
+
+                property.Photos.Add(photo);
+                await _unitOfWork.SaveAsync();
+                return StatusCode(201);
             }
-            catch (Exception)   
+            catch (Exception)
             {
 
                 throw;

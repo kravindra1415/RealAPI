@@ -1,4 +1,6 @@
-﻿namespace WebApplication1.Dtos
+﻿using WebApplication1.Models;
+
+namespace WebApplication1.Dtos
 {
     public class PropertyDetailDto : PropertyListDto
     {
@@ -13,5 +15,6 @@
         public int Maintenance { get; set; }
         public int Age { get; set; }
         public string Description { get; set; } = null!;
+        public ICollection<PhotoDto> Photos { get; set; } 
     }
 }

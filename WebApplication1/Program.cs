@@ -20,24 +20,24 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 
-//add datacontext
+////add datacontext
 string connectionString = builder.Configuration.GetConnectionString("Default");
 builder.Services.AddDbContext<DataContext>(options => options.UseSqlServer(connectionString));
 
-//repository
-//builder.Services.AddScoped<ICityRepository,CityRepository>();
+////repository
+////builder.Services.AddScoped<ICityRepository,CityRepository>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
-//cloudinary setting
+////cloudinary setting
 builder.Services.AddScoped<IPhotoService,PhotoService>();
 
 
-//authentication service
+////authentication service
 
-//secret key
+////secret key
 var secretKey = builder.Configuration.GetSection("AppSettings:Key").Value;
 
-//key
+////key
 var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey));
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -52,10 +52,10 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         };
     });
 
-//AutoMapper
+////AutoMapper
 builder.Services.AddAutoMapper(typeof(AutoMapp));
 
-//patch
+////patch
 builder.Services.AddControllers().AddNewtonsoftJson();  // but it is deprecated
 
 var app = builder.Build();
