@@ -13,11 +13,13 @@ namespace WebApplication1.Controllers
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
+        private readonly IPhotoService _photoService;
 
-        public PropertyController(IUnitOfWork unitOfWork, IMapper mapper)
+        public PropertyController(IUnitOfWork unitOfWork, IMapper mapper, IPhotoService photoService)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
+            _photoService = photoService;
         }
 
         //Property/list/1
@@ -69,7 +71,27 @@ namespace WebApplication1.Controllers
                 throw;
             }
 
+        }
 
+        //Property/add/photo/1
+        [HttpPost("add/photo/{propId}")]
+        [Authorize]
+        public async Task<IActionResult> AddPropertyPhoto(IFormFile file, int propId)
+        {
+            try
+            {
+                var result = await _photoService.UploadPhotoAsync(file);
+                if (result.Error != null)
+                {
+                    return BadRequest(result.Error.Message);
+                }
+                return Ok(201);
+            }
+            catch (Exception)   
+            {
+
+                throw;
+            }
         }
     }
 }

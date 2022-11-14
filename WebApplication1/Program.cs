@@ -7,6 +7,7 @@ using WebApplication1.Data;
 using WebApplication1.Data.Repository;
 using WebApplication1.Data.Repository.Interfaces;
 using WebApplication1.Helpers;
+using WebApplication1.Service;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -26,6 +27,10 @@ builder.Services.AddDbContext<DataContext>(options => options.UseSqlServer(conne
 //repository
 //builder.Services.AddScoped<ICityRepository,CityRepository>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+//cloudinary setting
+builder.Services.AddScoped<IPhotoService,PhotoService>();
+
 
 //authentication service
 
