@@ -8,7 +8,6 @@ using WebApplication1.Models;
 
 namespace WebApplication1.Controllers
 {
-
     public class PropertyController : BaseController
     {
         private readonly IUnitOfWork _unitOfWork;
@@ -96,7 +95,7 @@ namespace WebApplication1.Controllers
 
                 if (property.Photos.Count == 0)
                 {
-                    photo.IsPrimary = true; 
+                    photo.IsPrimary = true;
                 }
 
                 property.Photos.Add(photo);
@@ -108,6 +107,43 @@ namespace WebApplication1.Controllers
 
                 throw;
             }
+        }
+
+        //	https://res.cloudinary.com/demoupload/image/upload/v1668402440/yefb5j47c85dogv234b6.jpg
+        //where photoPublicId is yefb5j47c85dogv234b6
+
+        //Property/set-primary-photo/1/dasdsad
+        [HttpPost("set-primary-photo/{propId}/{photoPublicId}")]
+        [Authorize]
+        public async Task<IActionResult> SetPrimaryPhoto(int propId, string photoPublicId)
+        {
+            var userId = GetUserId();
+            var property = await _unitOfWork.PropertyRepository.GetPropertyByIdAsync(propId);
+
+            if (property.PostedBy != userId)
+                return BadRequest("you are not authorized to change the photo.");
+
+            if (property == null)
+                return BadRequest("no such property or photo exists..");
+
+            var photo = property.Photos.FirstOrDefault(p => p.PublicId == photoPublicId);
+
+            if (photo == null)
+                return BadRequest("no such property or photo exists!!");
+
+            if (photo.IsPrimary)
+                return BadRequest("This is already a primary photo..");
+
+            var currentPrimary = property.Photos.FirstOrDefault(p => p.IsPrimary);
+            if (currentPrimary != null)
+                currentPrimary.IsPrimary = false;
+            photo.IsPrimary = true;
+
+            if(await _unitOfWork.SaveAsync()) 
+                return NoContent();
+
+            return BadRequest("Some error has occured, failed to set primary photo..");
+
         }
     }
 }

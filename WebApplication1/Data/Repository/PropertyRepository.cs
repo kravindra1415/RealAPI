@@ -31,7 +31,7 @@ namespace WebApplication1.Data.Repository
                 .Include(p => p.PropertyType)
                 .Include(p => p.City)
                 .Include(p => p.FurnishingType)
-                .Include(p=>p.Photos)
+                .Include(p => p.Photos)
                 .Where(p => p.SellRent == SellRent).ToListAsync();
             return properties;
         }
@@ -52,7 +52,8 @@ namespace WebApplication1.Data.Repository
         {
             var properties = await _dataContext.Properties
                 .Include(p => p.Photos)
-                .Where(p => p.Id == Id).FirstAsync();
+                .Where(p => p.Id == Id).
+                FirstOrDefaultAsync();
 
             return properties;
         }
