@@ -14,5 +14,6 @@
         public string Country { get; set; } = null!;
         public bool ReadyToMove { get; set; }
         public DateTime EstPosessionOn { get; set; }
+        public string Photo { get; set; }
     }
 }

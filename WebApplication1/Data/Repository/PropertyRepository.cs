@@ -31,6 +31,7 @@ namespace WebApplication1.Data.Repository
                 .Include(p => p.PropertyType)
                 .Include(p => p.City)
                 .Include(p => p.FurnishingType)
+                .Include(p=>p.Photos)
                 .Where(p => p.SellRent == SellRent).ToListAsync();
             return properties;
         }
