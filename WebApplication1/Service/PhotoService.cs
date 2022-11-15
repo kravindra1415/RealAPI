@@ -9,7 +9,6 @@ namespace WebApplication1.Service
         private readonly Cloudinary cloudinary;
         public PhotoService(IConfiguration configuration)
         {
-
             //Account account = new Account("my_cloud_name", "my_api_key", "my_api_secret");
             Account account = new(configuration.GetSection("CloudinarySettings:CloudName").Value,
                 configuration.GetSection("CloudinarySettings:ApiKey").Value,
@@ -18,6 +17,17 @@ namespace WebApplication1.Service
             cloudinary = new Cloudinary(account);
 
         }
+
+        public async Task<DeletionResult> DeletePhotoAsync(string publicId)
+        {
+            var deleteParams = new DeletionParams(publicId);
+
+            var result = await cloudinary.DestroyAsync(deleteParams);
+
+            return result;
+
+        }
+
         public async Task<ImageUploadResult> UploadPhotoAsync(IFormFile photo)
         {
             var uploadResult = new ImageUploadResult();
@@ -26,9 +36,9 @@ namespace WebApplication1.Service
                 using var stream = photo.OpenReadStream();
                 var uploadParams = new ImageUploadParams
                 {
-                    File = new FileDescription(photo.FileName,stream),
+                    File = new FileDescription(photo.FileName, stream),
                     Transformation = new Transformation().Height(500).Width(800),
-                    
+
                 };
 
                 uploadResult = await cloudinary.UploadAsync(uploadParams);

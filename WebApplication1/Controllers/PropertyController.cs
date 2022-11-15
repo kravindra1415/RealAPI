@@ -139,10 +139,50 @@ namespace WebApplication1.Controllers
                 currentPrimary.IsPrimary = false;
             photo.IsPrimary = true;
 
-            if(await _unitOfWork.SaveAsync()) 
+            if (await _unitOfWork.SaveAsync())
                 return NoContent();
 
             return BadRequest("Some error has occured, failed to set primary photo..");
+        }
+
+
+        //Property/delete-photo/1/dasdsad
+        [HttpDelete("delete-photo/{propId}/{photoPublicId}")]
+        [Authorize]
+        public async Task<IActionResult> DeletePhoto(int propId, string photoPublicId)
+        {
+            var userId = GetUserId();
+            var property = await _unitOfWork.PropertyRepository.GetPropertyByIdAsync(propId);
+
+            if (property.PostedBy != userId)
+                return BadRequest("you are not authorized to delete the photo.");
+
+            if (property == null)
+                return BadRequest("no such property or photo exists..");
+
+            var photo = property.Photos.FirstOrDefault(p => p.PublicId == photoPublicId);
+
+            if (photo == null)
+                return BadRequest("no such property or photo exists!!");
+
+            if (photo.IsPrimary)
+                return BadRequest("This is already a primary photo..");
+
+            var result = await _photoService.DeletePhotoAsync(photoPublicId);
+            if (result.Error != null)
+                return BadRequest(result.Error.Message);
+
+            //var currentPrimary = property.Photos.FirstOrDefault(p => p.IsPrimary);
+            //if (currentPrimary != null)
+            //    currentPrimary.IsPrimary = false;
+            //photo.IsPrimary = true;
+
+            property.Photos.Remove(photo);
+
+            if (await _unitOfWork.SaveAsync())
+                return Ok();
+
+            return BadRequest("Some error has occured, failed to delete photo..");
 
         }
     }
